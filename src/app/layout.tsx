@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import PageFade from "./components/PageFade";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,13 +22,13 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) { 
+}>) {
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-neutral-900 text-white min-h-screen antialiased`}
       >
-        {children}
+        <PageFade>{children}</PageFade>
       </body>
     </html>
   );

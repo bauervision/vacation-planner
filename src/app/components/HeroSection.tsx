@@ -5,6 +5,7 @@
 import React, { ReactNode, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
+import Align from "./Align";
 
 type ScrollEffect =
   | "static"
@@ -34,6 +35,8 @@ interface HeroSectionProps {
   maskAngle?: number;
   maskDirection?: "left" | "right";
   maskedBgColor?: string;
+  contentAlign?: "left" | "center" | "right";
+  gap?: string;
 }
 
 // Utility: parallelogram mask generator
@@ -77,8 +80,17 @@ export default function HeroSection({
   maskAngle,
   maskDirection = "right",
   maskedBgColor = "#0a0d1a",
+  contentAlign = "left",
+  gap,
 }: HeroSectionProps) {
   const ref = useRef<HTMLDivElement>(null);
+
+  const alignClass =
+    contentAlign === "center"
+      ? "items-center"
+      : contentAlign === "right"
+      ? "items-end"
+      : "items-start"; // left/default
 
   // --- Motion effect hooks (only for non-sticky) ---
   const { scrollYProgress } = useScroll({
@@ -207,8 +219,18 @@ export default function HeroSection({
         {/* If masked, show fill background behind parallelogram. If not, just the image */}
         {hasMask ? (
           <div
-            className="absolute inset-0 w-full h-full z-0"
-            style={{ background: maskedBgColor }}
+            className={`absolute inset-0 w-full h-full z-0 ${
+              maskedBgColor?.startsWith("bg-") ? maskedBgColor : ""
+            }`}
+            style={
+              maskedBgColor && !maskedBgColor.startsWith("bg-")
+                ? {
+                    background: maskedBgColor,
+                    transition: "background 0.2s",
+                    border: "2px solid red",
+                  }
+                : undefined
+            }
           >
             <div
               className="absolute inset-0 w-full h-full"
@@ -245,31 +267,39 @@ export default function HeroSection({
           </div>
         )}
         {/* Content */}
-        <div className="absolute inset-0 z-10 flex flex-col items-start justify-end w-full h-full px-6 pb-10 pointer-events-none">
+        <div
+          className={`absolute inset-0 z-10 flex flex-col ${alignClass}  justify-end w-full h-full px-6 pb-10 pointer-events-none`}
+        >
           <div className="pointer-events-auto">
-            {title && (
-              <motion.h1
-                className="text-4xl md:text-6xl font-extrabold mb-4 drop-shadow-2xl text-left"
-                initial={{ y: 30, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                transition={{ duration: 1.1, delay: 0.3, type: "spring" }}
-                viewport={{ once: true }}
-              >
-                {title}
-              </motion.h1>
-            )}
-            {description && (
-              <motion.p
-                className="text-lg md:text-2xl mb-8 max-w-xl text-left"
-                initial={{ y: 40, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                transition={{ duration: 1, delay: 0.6 }}
-                viewport={{ once: true }}
-              >
-                {description}
-              </motion.p>
-            )}
-            {children}
+            <Align
+              align={contentAlign}
+              gap={gap}
+              className="pointer-events-auto w-full"
+            >
+              {title && (
+                <motion.h1
+                  className="text-4xl md:text-6xl font-extrabold mb-4 drop-shadow-2xl text-left"
+                  initial={{ y: 30, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 1.1, delay: 0.3, type: "spring" }}
+                  viewport={{ once: true }}
+                >
+                  {title}
+                </motion.h1>
+              )}
+              {description && (
+                <motion.p
+                  className="text-lg md:text-2xl mb-8 max-w-xl "
+                  initial={{ y: 40, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 1, delay: 0.6 }}
+                  viewport={{ once: true }}
+                >
+                  {description}
+                </motion.p>
+              )}
+              {children}
+            </Align>
           </div>
         </div>
       </div>
@@ -290,48 +320,62 @@ export default function HeroSection({
           aria-hidden="true"
         />
       )}
-      <motion.div
-        className="absolute inset-0 w-full h-full z-0"
-        style={imageStyle}
-        initial={{ opacity: 1, scale: 1 }}
+      <Align
+        align={contentAlign}
+        gap={gap}
+        className="pointer-events-auto w-full"
       >
-        <Image
-          src={imageUrl}
-          alt={title || "Hero Background"}
-          fill
-          className="object-cover object-center"
-          priority
-        />
-        <div
-          className={`absolute inset-0 bg-gradient-to-b ${overlayGradient}`}
-        />
-      </motion.div>
+        <motion.div
+          className="absolute inset-0 w-full h-full z-0"
+          style={imageStyle}
+          initial={{ opacity: 1, scale: 1 }}
+        >
+          <Image
+            src={imageUrl}
+            alt={title || "Hero Background"}
+            fill
+            className="object-cover object-center"
+            priority
+          />
+          <div
+            className={`absolute inset-0 bg-gradient-to-b ${overlayGradient}`}
+          />
+        </motion.div>
+      </Align>
       {/* Content Layer */}
-      <div className="relative z-10 flex flex-col items-start justify-end h-full w-full px-6 pb-10 pointer-events-none">
+      <div
+        className={`relative z-10 flex flex-col  ${alignClass} justify-end h-full w-full px-6 pb-10 pointer-events-none`}
+      >
         <div className="pointer-events-auto">
-          {title && (
-            <motion.h1
-              className="text-4xl md:text-6xl font-extrabold mb-4 drop-shadow-2xl text-left"
-              initial={{ y: 30, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              transition={{ duration: 1.1, delay: 0.3, type: "spring" }}
-              viewport={{ once: true }}
-            >
-              {title}
-            </motion.h1>
-          )}
-          {description && (
-            <motion.p
-              className="text-lg md:text-2xl mb-8 max-w-xl text-left"
-              initial={{ y: 40, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              transition={{ duration: 1, delay: 0.6 }}
-              viewport={{ once: true }}
-            >
-              {description}
-            </motion.p>
-          )}
-          {children}
+          <Align
+            align={contentAlign}
+            gap={gap}
+            className="pointer-events-auto w-full"
+          >
+            {title && (
+              <motion.h1
+                className="text-4xl md:text-6xl font-extrabold mb-4 drop-shadow-2xl "
+                initial={{ y: 30, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                transition={{ duration: 1.1, delay: 0.3, type: "spring" }}
+                viewport={{ once: true }}
+              >
+                {title}
+              </motion.h1>
+            )}
+            {description && (
+              <motion.p
+                className="text-lg md:text-2xl mb-8 max-w-xl"
+                initial={{ y: 40, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                transition={{ duration: 1, delay: 0.6 }}
+                viewport={{ once: true }}
+              >
+                {description}
+              </motion.p>
+            )}
+            {children}
+          </Align>
         </div>
       </div>
     </section>
