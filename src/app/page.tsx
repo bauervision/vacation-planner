@@ -18,7 +18,29 @@ export default function HomePage() {
       </HeroSection>
 
       {/* Main content scrolls up over the hero */}
-      <section className="relative z-10 bg-blue-900 min-h-[200vh] p-10">
+      <section className="relative z-10 bg-blue-900 min-h-[100vh] p-10">
+        <h2 className="text-3xl font-bold mb-8">Your Dashboard</h2>
+        <p>...More awesome travel content...</p>
+      </section>
+
+      <HeroSection
+        imageUrl="/backgrounds/waterfall.jpg"
+        title="Plan Your Next Adventure"
+        description="Discover beautiful destinations, track your journeys, and get inspired for your next escape."
+        scrollEffect="static" // try "parallax", "fadeIn", etc.
+        maskAngle={45}
+        maskDirection="right"
+        maskedBgColor="bg-blue-900"
+        //imageScale={3.3}
+        overlayGradient="from-black/80 to-black/40"
+      >
+        <button className="bg-blue-500 hover:bg-blue-700 transition rounded-lg px-8 py-3 text-xl font-bold shadow-lg pointer-events-auto">
+          Explore Dashboard
+        </button>
+      </HeroSection>
+
+      {/* Main content scrolls up over the hero */}
+      <section className="relative z-10 bg-blue-900 min-h-[100vh] p-10">
         <h2 className="text-3xl font-bold mb-8">Your Dashboard</h2>
         <p>...More awesome travel content...</p>
       </section>
@@ -27,13 +49,38 @@ export default function HomePage() {
         imageUrl="/backgrounds/sunset.jpg"
         title="Plan Your Next Adventure"
         description="Discover beautiful destinations, track your journeys, and get inspired for your next escape."
-        scrollEffect="static" // try "parallax", "fadeIn", etc.
+        scrollEffect="fadeInOut" // try "parallax", "fadeIn", etc.
         overlayGradient="from-black/80 to-black/40"
       >
         <button className="bg-blue-500 hover:bg-blue-700 transition rounded-lg px-8 py-3 text-xl font-bold shadow-lg pointer-events-auto">
           Explore Dashboard
         </button>
       </HeroSection>
+
+      {/* Main content scrolls up over the hero */}
+      <section className="relative z-10 bg-blue-900 min-h-[100vh] p-10">
+        <h2 className="text-3xl font-bold mb-8">Your Dashboard</h2>
+        <p>...More awesome travel content...</p>
+      </section>
+
+      <HeroSection
+        imageUrl="/backgrounds/sunset.jpg"
+        title="Plan Your Next Adventure"
+        description="Discover beautiful destinations, track your journeys, and get inspired for your next escape."
+        scrollEffect="slideLeft" // try "parallax", "fadeIn", etc.
+        imageScale={2}
+        overlayGradient="from-black/80 to-black/40"
+      >
+        <button className="bg-blue-500 hover:bg-blue-700 transition rounded-lg px-8 py-3 text-xl font-bold shadow-lg pointer-events-auto">
+          Explore Dashboard
+        </button>
+      </HeroSection>
+
+      {/* Main content scrolls up over the hero */}
+      <section className="relative z-10 bg-blue-900 min-h-[100vh] p-10">
+        <h2 className="text-3xl font-bold mb-8">Your Dashboard</h2>
+        <p>...More awesome travel content...</p>
+      </section>
     </div>
   );
 }
