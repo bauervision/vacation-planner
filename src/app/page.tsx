@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useInView, motion, AnimatePresence } from "framer-motion";
 
 import Align from "./components/Align";
@@ -10,16 +10,20 @@ import NavBar from "./components/NavBar";
 import PageTitle from "./components/PageTitle";
 
 import Section from "./components/Section";
+import SignUpLoginDialog from "./components/SignUpLoginDialog";
 
 export default function HomePage() {
+  const [dialogOpen, setDialogOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
   const isNavInView = useInView(navRef, { margin: "-48px 0px 0px 0px" }); // tweak as needed
+
+  const loggedIn = true;
 
   return (
     <div>
       <PageTitle title="Vacation Planner">
         <div ref={navRef}>
-          <NavBar loggedIn={true} className="mt-15" />
+          <NavBar loggedIn={loggedIn} className="mt-15" />
         </div>
       </PageTitle>
 
@@ -36,7 +40,7 @@ export default function HomePage() {
             }}
             className="fixed py-6 md:py-10 top-0 left-0 right-0 z-[999] h-15 flex items-center justify-center bg-secondary shadow-xl overflow-hidden"
           >
-            <NavBar loggedIn={true} />
+            <NavBar loggedIn={loggedIn} />
           </motion.div>
         )}
       </AnimatePresence>
@@ -48,8 +52,11 @@ export default function HomePage() {
         scrollEffect="sticky" // try "parallax", "fadeIn", etc.
       >
         <Align align="left">
-          <button className="bg-accent mb-20 hover:bg-primary transition rounded-lg px-8 py-3 text-xl font-bold shadow-lg pointer-events-auto">
-            Explore Dashboard
+          <button
+            onClick={() => setDialogOpen(true)}
+            className="bg-accent mb-20 hover:bg-primary transition rounded-lg px-8 py-3 text-xl font-bold shadow-lg pointer-events-auto"
+          >
+            {loggedIn ? "Book Now" : "Sign-Up!"}
           </button>
         </Align>
       </HeroSection>
@@ -108,6 +115,11 @@ export default function HomePage() {
         <h2 className="text-3xl font-bold mb-8">Your Dashboard</h2>
         <p>...More awesome travel content...</p>
       </section>
+
+      <SignUpLoginDialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+      />
     </div>
   );
 }
