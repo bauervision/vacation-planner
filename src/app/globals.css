@@ -1,12 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --color-primary: #3b82f6; /* blue-500 */
-  --color-secondary: #fbbf24; /* amber-400 */
-  --color-accent: #ef4444; /* red-500 */
-  --color-bg: #0a0d1a;
-  --color-hero-gradient-top: #10172a;
-  --color-hero-gradient-bottom: #3b82f6;
+  --color-primary: #212d40; /* prussian blue */
+  --color-secondary: #364156; /* charcoal */
+  --color-accent: #d66853; /* jasper */
+  --color-accent2: #7d4e57; /* rose taupe */
+  --color-bg: #11151c; /* rich black */
 }
 
 @theme inline {
@@ -20,6 +19,13 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+  }
+}
+
+@media (min-width: 640px) {
+  .sm\:text-stroke {
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.6);
+    text-stroke: 1px rgba(255, 255, 255, 0.6);
   }
 }
 
@@ -38,6 +44,9 @@ body {
 .bg-accent {
   background-color: var(--color-accent) !important;
 }
+.bg-accent2 {
+  background-color: var(--color-accent2) !important;
+}
 .bg-bg {
   background-color: var(--color-bg) !important;
 }
@@ -49,4 +58,38 @@ body {
 }
 .text-accent {
   color: var(--color-accent) !important;
+}
+.text-accent2 {
+  color: var(--color-accent2) !important;
+}
+
+/* globals.css */
+@keyframes gradient-vertical-move {
+  0% {
+    background-position: top;
+  }
+  50% {
+    background-position: bottom;
+  }
+  100% {
+    background-position: top;
+  }
+}
+
+.animated-gradient {
+  background-size: 100% 300%;
+  background-position: top;
+  animation: gradient-vertical-move 5s ease-in-out infinite;
+}
+
+.text-stroke {
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.7);
+}
+
+.text-outline-shadow {
+  text-shadow: 0 0 1px #fff;
+}
+
+.text-hero-shadow {
+  filter: drop-shadow(0 10px 12px #000a) drop-shadow(0 4px 4px #0005);
 }

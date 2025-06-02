@@ -34,7 +34,9 @@ interface HeroSectionProps {
   imageScale?: number; // for always-on scale
   maskAngle?: number;
   maskDirection?: "left" | "right";
-  maskedBgColor?: string;
+  maskedBgColor?: string; // Top color (default)
+  maskedBgColor2?: string; // Bottom color (optional)
+  maskedBgGradientPoint?: string | number; // e.g. "60%"
   contentAlign?: "left" | "center" | "right";
   gap?: string;
 }
@@ -70,7 +72,7 @@ export default function HeroSection({
   title,
   description,
   scrollEffect = "static",
-  overlayGradient = "from-black/80 to-black/40",
+  overlayGradient = "from-black/30 to-black/10",
   children,
   height = "h-[70vh]",
   className = "",
@@ -80,6 +82,8 @@ export default function HeroSection({
   maskAngle,
   maskDirection = "right",
   maskedBgColor = "#0a0d1a",
+  maskedBgColor2,
+  maskedBgGradientPoint = "60%",
   contentAlign = "left",
   gap,
 }: HeroSectionProps) {
@@ -139,6 +143,11 @@ export default function HeroSection({
     ? GetParallelogram(maskDirection, maskAngle)
     : undefined;
   const clipPath = polygon ? `polygon(${polygon})` : undefined;
+
+  // Compose gradient for masked background
+  const maskedBgGradient = maskedBgColor2
+    ? `linear-gradient(to bottom, ${maskedBgColor} 0%, ${maskedBgColor} ${maskedBgGradientPoint}, ${maskedBgColor2} ${maskedBgGradientPoint}, ${maskedBgColor2} 100%)`
+    : maskedBgColor;
 
   // --- Compose style object for image (motion effects) ---
   let imageStyle: any = {};
@@ -215,22 +224,15 @@ export default function HeroSection({
   // =========== STICKY ===============
   if (scrollEffect === "sticky") {
     return (
-      <div className={`sticky top-0 left-0 w-full ${height} z-0 ${className}`}>
+      <div className={`sticky top-0 left-0 w-full ${height} z-5 ${className}`}>
         {/* If masked, show fill background behind parallelogram. If not, just the image */}
         {hasMask ? (
           <div
-            className={`absolute inset-0 w-full h-full z-0 ${
-              maskedBgColor?.startsWith("bg-") ? maskedBgColor : ""
-            }`}
-            style={
-              maskedBgColor && !maskedBgColor.startsWith("bg-")
-                ? {
-                    background: maskedBgColor,
-                    transition: "background 0.2s",
-                    border: "2px solid red",
-                  }
-                : undefined
-            }
+            className={`absolute inset-0 w-full h-full z-5`}
+            style={{
+              background: maskedBgGradient,
+              transition: "background 0.2s",
+            }}
           >
             <div
               className="absolute inset-0 w-full h-full"
@@ -253,7 +255,7 @@ export default function HeroSection({
             </div>
           </div>
         ) : (
-          <div className="absolute inset-0 w-full h-full z-0">
+          <div className="absolute inset-0 w-full h-full z-5">
             <Image
               src={imageUrl}
               alt={title || "Hero Background"}
@@ -315,8 +317,8 @@ export default function HeroSection({
       {/* Fill background only if masked */}
       {hasMask && (
         <div
-          className="absolute inset-0 w-full h-full z-0"
-          style={{ background: maskedBgColor }}
+          className="absolute inset-0 w-full h-full z-5"
+          style={{ background: maskedBgGradient }}
           aria-hidden="true"
         />
       )}
@@ -326,9 +328,9 @@ export default function HeroSection({
         className="pointer-events-auto w-full"
       >
         <motion.div
-          className="absolute inset-0 w-full h-full z-0"
+          className="absolute inset-0 w-full h-full z-5"
           style={imageStyle}
-          initial={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 1, scale: staticImageScale }}
         >
           <Image
             src={imageUrl}
@@ -354,7 +356,7 @@ export default function HeroSection({
           >
             {title && (
               <motion.h1
-                className="text-4xl md:text-6xl font-extrabold mb-4 drop-shadow-2xl "
+                className="text-4xl md:text-6xl font-extrabold mb-4 drop-shadow-2xl"
                 initial={{ y: 30, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
                 transition={{ duration: 1.1, delay: 0.3, type: "spring" }}

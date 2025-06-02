@@ -11,9 +11,9 @@ interface SectionProps {
 function getRoundedClass(rounded: SectionProps["rounded"]) {
   switch (rounded) {
     case "top":
-      return "rounded-t-3xl";
+      return "rounded-t-3xl -mt-10";
     case "bottom":
-      return "rounded-b-3xl";
+      return "rounded-b-3xl -mb-10";
     case "none":
       return "";
     case "both":

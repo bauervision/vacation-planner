@@ -11,7 +11,13 @@ module.exports = {
         primary: "var(--color-primary)",
         secondary: "var(--color-secondary)",
         accent: "var(--color-accent)",
+        accent2: "var(--color-accent2)",
         bg: "var(--color-bg)",
+      },
+      fontFamily: {
+        lilita: ["var(--font-lilita-one)", "cursive"],
+        geist: ["var(--font-geist-sans)", "sans-serif"],
+        "geist-mono": ["var(--font-geist-mono)", "monospace"],
       },
     },
   },
