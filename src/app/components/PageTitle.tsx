@@ -8,8 +8,8 @@ export default function PageTitle({
   className = "",
   fontSize = "text-5xl sm:text-6xl md:text-8xl lg:text-8xl xl:text-9xl",
   style,
-  titleTop = "top-6 md:top-10",
-  navOffset = "top-12 xl:top-40", // vertical gap below title
+  titleTop = "top-[-20] md:top-10",
+  navOffset = "top-[-10] xl:top-40 ", // vertical gap below title
 }: {
   title: string;
   children?: React.ReactNode;
@@ -32,7 +32,7 @@ export default function PageTitle({
         }}
         className={`
           absolute
-          right-8 top-8
+          right-8 
           ${titleTop}
           z-50
           ${fontSize}
@@ -42,7 +42,7 @@ export default function PageTitle({
           drop-shadow-2xl
           text-hero-shadow
           tracking-normal sm:tracking-wide md:tracking-wider
-          bg-gradient-to-b from-[#7D4E57] via-[#D66853] to-[#e4ddde]
+          bg-gradient-to-b from-[#D66853]  to-[#e4ddde]
           text-transparent bg-clip-text animated-gradient
           sm:text-stroke
           max-w-[95vw]
@@ -61,7 +61,7 @@ export default function PageTitle({
           className={`
             absolute
             left-1/2 -translate-x-1/2
-    md:left-auto md:translate-x-0 md:right-40
+            md:left-auto md:translate-x-0 md:right-40
             ${navOffset}
             z-40
             flex

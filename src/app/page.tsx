@@ -1,5 +1,8 @@
 "use client";
 
+import React, { useRef } from "react";
+import { useInView, motion, AnimatePresence } from "framer-motion";
+
 import Align from "./components/Align";
 
 import HeroSection from "./components/HeroSection";
@@ -9,11 +12,34 @@ import PageTitle from "./components/PageTitle";
 import Section from "./components/Section";
 
 export default function HomePage() {
+  const navRef = useRef<HTMLDivElement>(null);
+  const isNavInView = useInView(navRef, { margin: "-48px 0px 0px 0px" }); // tweak as needed
+
   return (
     <div>
       <PageTitle title="Vacation Planner">
-        <NavBar loggedIn={true} className="mt-15" />
+        <div ref={navRef}>
+          <NavBar loggedIn={true} className="mt-15" />
+        </div>
       </PageTitle>
+
+      {/* Sticky centered navbar when original is out of view */}
+      <AnimatePresence>
+        {!isNavInView && (
+          <motion.div
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: "100vw", opacity: 1 }}
+            exit={{ width: 0, opacity: 0 }}
+            transition={{
+              width: { duration: 0.2, ease: "easeOut" },
+              opacity: { duration: 0.3 },
+            }}
+            className="fixed py-6 md:py-10 top-0 left-0 right-0 z-[999] h-15 flex items-center justify-center bg-secondary shadow-xl overflow-hidden"
+          >
+            <NavBar loggedIn={true} />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <HeroSection
         imageUrl="/backgrounds/coastal-overlook.jpg"
