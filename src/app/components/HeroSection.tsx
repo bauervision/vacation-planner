@@ -270,7 +270,7 @@ export default function HeroSection({
         )}
         {/* Content */}
         <div
-          className={`absolute inset-0 z-10 flex flex-col ${alignClass}  justify-end w-full h-full px-6 pb-10 pointer-events-none`}
+          className={`absolute inset-0 z-10 pl-8 md:pl-20  flex flex-col ${alignClass}  justify-end w-full h-full px-6 pb-10 pointer-events-none`}
         >
           <div className="pointer-events-auto">
             <Align

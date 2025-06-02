@@ -1,12 +1,13 @@
 // components/NavBar.tsx
 "use client";
+import { useAuth } from "@/app/context/AuthContext";
 import React from "react";
 import Link from "next/link";
-import { User } from "lucide-react";
+import { User, LogOut } from "lucide-react";
 
 interface NavBarProps {
-  loggedIn: boolean;
   className?: string;
+  onLoginClick: () => void;
 }
 
 const buttonClasses = `
@@ -34,30 +35,32 @@ const iconBtn = `
   ml-1 md:ml-2
 `;
 
-export default function NavBar({ loggedIn, className = "" }: NavBarProps) {
+export default function NavBar({ onLoginClick, className = "" }: NavBarProps) {
+  const { user, logout } = useAuth();
+
   return (
     <nav className={`flex flex-row gap-3 ${className} `}>
       <div className="flex flex-row gap-3 items-center py-5 md:py-2">
         {/* LOGIN / DASHBOARD */}
-        {loggedIn ? (
+        {user ? (
           <Link href="/dashboard" className={buttonClasses}>
             Dashboard
           </Link>
         ) : (
-          <Link href="/login" className={buttonClasses}>
+          <button onClick={onLoginClick} className={buttonClasses}>
             Login
-          </Link>
+          </button>
         )}
 
         {/* MY TRIPS */}
-        {loggedIn && (
+        {user && (
           <Link href="/my-trips" className={buttonClasses}>
             My Trips
           </Link>
         )}
 
         {/* BOOK */}
-        {loggedIn && (
+        {user && (
           <Link href="/book" className={buttonClasses}>
             Book
           </Link>
@@ -68,14 +71,25 @@ export default function NavBar({ loggedIn, className = "" }: NavBarProps) {
           Explore
         </Link>
 
-        {loggedIn && (
-          <button
-            aria-label="Profile"
-            className={iconBtn}
-            // onClick={() => ...open profile/settings menu...}
-          >
-            <User className="w-5 h-5 md:w-6 md:h-6" />
-          </button>
+        {user && (
+          <>
+            <button
+              aria-label="Profile"
+              className={iconBtn}
+              // onClick={() => ...open profile/settings menu...}
+            >
+              <User className="w-5 h-5 md:w-6 md:h-6" />
+            </button>
+
+            <button
+              aria-label="Logout"
+              className={iconBtn}
+              onClick={logout}
+              title="Log out"
+            >
+              <LogOut className="w-4 h-4 md:w-5 md:h-5" />
+            </button>
+          </>
         )}
       </div>
     </nav>

@@ -1,5 +1,5 @@
 "use client";
-
+import { useAuth } from "@/app/context/AuthContext";
 import React, { useRef, useState } from "react";
 import { useInView, motion, AnimatePresence } from "framer-motion";
 
@@ -17,13 +17,13 @@ export default function HomePage() {
   const navRef = useRef<HTMLDivElement>(null);
   const isNavInView = useInView(navRef, { margin: "-48px 0px 0px 0px" }); // tweak as needed
 
-  const loggedIn = true;
+  const { user } = useAuth();
 
   return (
     <div>
       <PageTitle title="Vacation Planner">
         <div ref={navRef}>
-          <NavBar loggedIn={loggedIn} className="mt-15" />
+          <NavBar className="mt-15" onLoginClick={() => setDialogOpen(true)} />
         </div>
       </PageTitle>
 
@@ -40,7 +40,7 @@ export default function HomePage() {
             }}
             className="fixed py-6 md:py-10 top-0 left-0 right-0 z-[999] h-15 flex items-center justify-center bg-secondary shadow-xl overflow-hidden"
           >
-            <NavBar loggedIn={loggedIn} />
+            <NavBar onLoginClick={() => setDialogOpen(true)} />
           </motion.div>
         )}
       </AnimatePresence>
@@ -56,7 +56,7 @@ export default function HomePage() {
             onClick={() => setDialogOpen(true)}
             className="bg-accent mb-20 hover:bg-primary transition rounded-lg px-8 py-3 text-xl font-bold shadow-lg pointer-events-auto"
           >
-            {loggedIn ? "Book Now" : "Sign-Up!"}
+            {user ? "Book Now" : "Sign-Up!"}
           </button>
         </Align>
       </HeroSection>

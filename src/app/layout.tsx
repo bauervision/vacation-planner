@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Lilita_One } from "next/font/google";
 import "./globals.css";
 import PageFade from "./components/PageFade";
+import { AuthProvider } from "./context/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,7 +36,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${lilitaOne.variable} overflow-x-hidden bg-neutral-900 text-white min-h-screen antialiased`}
       >
-        <PageFade>{children}</PageFade>
+        <PageFade>
+          <AuthProvider>{children}</AuthProvider>
+        </PageFade>
       </body>
     </html>
   );

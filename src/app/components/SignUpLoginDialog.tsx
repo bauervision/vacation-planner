@@ -1,4 +1,5 @@
 "use client";
+import { useAuth } from "@/app/context/AuthContext";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -12,6 +13,21 @@ export default function SignUpLoginDialog({
   onClose,
 }: SignUpLoginDialogProps) {
   const [mode, setMode] = useState<"login" | "signup">("login");
+  const { login } = useAuth();
+  const [error, setError] = useState("");
+
+  function handleLoginSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const username = form.username.value.trim();
+
+    if (login(username)) {
+      setError("");
+      onClose();
+    } else {
+      setError("Username must be 'mcb'");
+    }
+  }
 
   return (
     <AnimatePresence>
@@ -54,30 +70,30 @@ export default function SignUpLoginDialog({
             <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">
               {mode === "login" ? "Login" : "Sign Up"}
             </h2>
-            <form className="flex flex-col gap-3">
+            <form className="flex flex-col gap-3" onSubmit={handleLoginSubmit}>
               {mode === "signup" && (
                 <input
-                  className="rounded px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-primary focus:outline-none"
+                  className=" text-primary rounded px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-primary focus:outline-none"
                   type="text"
                   placeholder="Full Name"
                   autoComplete="name"
                 />
               )}
               <input
-                className="rounded px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-primary focus:outline-none"
-                type="email"
-                placeholder="Email"
-                autoComplete="email"
+                name="username"
+                className="text-primary rounded px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-primary focus:outline-none"
+                placeholder="Username"
                 required
+                autoFocus
               />
+
               <input
-                className="rounded px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-primary focus:outline-none"
+                className="text-primary rounded px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-primary focus:outline-none"
                 type="password"
                 placeholder="Password"
                 autoComplete={
                   mode === "signup" ? "new-password" : "current-password"
                 }
-                required
               />
               <button
                 className="mt-2 bg-primary text-white py-2 rounded font-semibold shadow hover:bg-primary/90 transition"
@@ -85,6 +101,8 @@ export default function SignUpLoginDialog({
               >
                 {mode === "login" ? "Login" : "Sign Up"}
               </button>
+
+              {error && <div className="text-red-500 text-sm">{error}</div>}
             </form>
             <div className="text-center text-sm text-gray-600 mt-2">
               {mode === "login" ? (
