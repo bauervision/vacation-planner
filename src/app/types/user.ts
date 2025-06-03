@@ -10,6 +10,7 @@ export interface Vacation {
   travelers: string[]; // Names or IDs
   notes?: string;
   hostId?: string; // Reference to host contact
+  image?: string;
 }
 
 export interface HostContact {

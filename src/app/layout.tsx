@@ -3,7 +3,9 @@ import { Geist, Geist_Mono, Lilita_One } from "next/font/google";
 import "./globals.css";
 import PageFade from "./components/PageFade";
 import { AuthProvider } from "./context/AuthContext";
+import StickyNavClient from "./components/StickyNavClient";
 
+// Font imports (same as before)
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -37,7 +39,13 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${lilitaOne.variable} overflow-x-hidden bg-neutral-900 text-white min-h-screen antialiased`}
       >
         <PageFade>
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            {/* Sticky NavBar when original is out of view */}
+            <StickyNavClient />
+
+            {/* All your pages render here */}
+            {children}
+          </AuthProvider>
         </PageFade>
       </body>
     </html>

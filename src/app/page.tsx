@@ -11,33 +11,24 @@ import PageTitle from "./components/PageTitle";
 
 import Section from "./components/Section";
 import SignUpLoginDialog from "./components/SignUpLoginDialog";
-import { VacationToast } from "./components/VacationToast";
-import { getNextVacation } from "./utils/user";
-import { Vacation } from "./types/user";
+import { useRouter } from "next/navigation";
 
 export default function HomePage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
   const isNavInView = useInView(navRef, { margin: "-48px 0px 0px 0px" }); // tweak as needed
-
+  const router = useRouter();
   const { user } = useAuth();
-  const [showToast, setShowToast] = useState(false);
 
   const wasUser = useRef(user);
-  const [nextVacation, setNextVacation] = useState<Vacation | null>(null);
 
   useEffect(() => {
     // Only show if user changed from null to something
     if (!wasUser.current && user) {
-      setShowToast(true);
+      router.replace("/dashboard");
     }
     wasUser.current = user;
-    if (user) {
-      setNextVacation(getNextVacation(user.futureVacations));
-    } else {
-      setNextVacation(null); // Clear it when logging out
-    }
-  }, [user]);
+  }, [router, user]);
 
   return (
     <div>
@@ -47,7 +38,7 @@ export default function HomePage() {
         </div>
       </PageTitle>
 
-      {/* Sticky centered navbar when original is out of view */}
+      {/* Sticky NavBar only when the original is out of view */}
       <AnimatePresence>
         {!isNavInView && (
           <motion.div
@@ -139,20 +130,6 @@ export default function HomePage() {
       <SignUpLoginDialog
         open={dialogOpen}
         onClose={() => setDialogOpen(false)}
-      />
-
-      <VacationToast
-        open={showToast}
-        onClose={() => setShowToast(false)}
-        daysToVacation={
-          nextVacation
-            ? Math.ceil(
-                (new Date(nextVacation.startDate).getTime() - Date.now()) /
-                  (1000 * 60 * 60 * 24)
-              )
-            : undefined
-        }
-        destination={nextVacation?.location}
       />
     </div>
   );

@@ -70,7 +70,7 @@ export default function SignUpLoginDialog({
               ×
             </button>
             <div className="flex flex-col items-center gap-2 mb-2">
-              <span className="bg-primary p-3 rounded-full shadow-lg flex items-center justify-center">
+              <span className="bg-accent p-3 rounded-full shadow-lg flex items-center justify-center">
                 <SunIcon className="h-7 w-7 text-white" />
               </span>
               <h2 className="text-2xl font-bold text-primary text-center tracking-tight drop-shadow">
@@ -153,6 +153,25 @@ export default function SignUpLoginDialog({
                 </>
               )}
             </div>
+            {mode === "login" ? (
+              <div className="mt-4 text-xs text-center text-primary">
+                <span>
+                  <strong>Demo login:</strong> Enter{" "}
+                  <span className="bg-gray-200 rounded px-2 py-0.5 text-primary font-mono">
+                    mcb
+                  </span>{" "}
+                  as username.
+                  <br />
+                  No password required.
+                </span>
+              </div>
+            ) : (
+              <div className="mt-4 text-xs text-center text-primary">
+                <span>
+                  <strong>User creation disabled for demo</strong>
+                </span>
+              </div>
+            )}
           </motion.div>
         </motion.div>
       )}
