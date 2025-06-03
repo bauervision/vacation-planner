@@ -1,10 +1,7 @@
 "use client";
 import React, { createContext, useContext, useState } from "react";
-
-interface User {
-  username: string;
-  // add more fields as needed (email, avatar, trips, etc.)
-}
+import { demoUser } from "../constants";
+import { User } from "../types/user";
 
 interface AuthContextType {
   user: User | null;
@@ -19,7 +16,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   function login(username: string) {
     if (username.trim().toLowerCase() === "mcb") {
-      setUser({ username: "mcb" });
+      setUser(demoUser);
       return true;
     }
     return false;

@@ -2,6 +2,7 @@
 import { useAuth } from "@/app/context/AuthContext";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { UserIcon, LockIcon, SunIcon } from "lucide-react"; // <--- You can swap SunIcon for your app icon
 
 interface SignUpLoginDialogProps {
   open: boolean;
@@ -33,7 +34,7 @@ export default function SignUpLoginDialog({
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-[1000] flex bg-black/50"
+          className="fixed inset-0 z-[1000] flex items-center justify-center bg-gradient-to-br from-primary/80 via-sky-200/80 to-secondary/80"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -41,75 +42,100 @@ export default function SignUpLoginDialog({
         >
           <motion.div
             className="
-    fixed z-[1001]
-    left-1/2 top-1/2
-    -translate-x-1/2 -translate-y-1/2
-    bg-white
-    w-[90vw] max-w-sm
-    p-6
-    rounded-2xl
-    shadow-2xl
-    flex flex-col
-    gap-4
-    max-h-[90vh]
-    overflow-y-auto
-  "
-            initial={{ y: 50, scale: 0.95, opacity: 0 }}
+              relative
+              z-[1001]
+              w-[90vw] max-w-sm
+              p-8 pb-6
+              rounded-2xl
+              shadow-2xl
+              flex flex-col gap-4
+              max-h-[90vh]
+              overflow-y-auto
+              bg-white/70
+              backdrop-blur-md
+              border-4 border-primary
+            "
+            initial={{ y: 50, scale: 0.96, opacity: 0 }}
             animate={{ y: 0, scale: 1, opacity: 1 }}
-            exit={{ y: 50, scale: 0.95, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 240, damping: 30 }}
+            exit={{ y: 50, scale: 0.96, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 260, damping: 30 }}
             onClick={(e) => e.stopPropagation()}
           >
             <button
-              className="absolute top-3 right-4 text-gray-400 hover:text-gray-900 text-2xl"
+              className="absolute top-3 right-4 text-gray-400 hover:text-primary text-2xl"
               aria-label="Close"
               onClick={onClose}
+              type="button"
             >
               ×
             </button>
-            <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">
-              {mode === "login" ? "Login" : "Sign Up"}
-            </h2>
-            <form className="flex flex-col gap-3" onSubmit={handleLoginSubmit}>
+            <div className="flex flex-col items-center gap-2 mb-2">
+              <span className="bg-primary p-3 rounded-full shadow-lg flex items-center justify-center">
+                <SunIcon className="h-7 w-7 text-white" />
+              </span>
+              <h2 className="text-2xl font-bold text-primary text-center tracking-tight drop-shadow">
+                {mode === "login" ? "Welcome Back!" : "Create Your Account"}
+              </h2>
+              <p className="text-muted-foreground text-sm text-center">
+                {mode === "login"
+                  ? "Log in to start planning your perfect trip"
+                  : "Sign up and start dreaming!"}
+              </p>
+            </div>
+            <form
+              className="flex flex-col gap-3 mt-2"
+              onSubmit={handleLoginSubmit}
+            >
               {mode === "signup" && (
-                <input
-                  className=" text-primary rounded px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-primary focus:outline-none"
-                  type="text"
-                  placeholder="Full Name"
-                  autoComplete="name"
-                />
+                <div className="relative">
+                  <input
+                    className="w-full text-primary rounded-lg px-10 py-3 border border-gray-200 bg-white/70 focus:ring-2 focus:ring-accent focus:outline-none focus:bg-white shadow-sm transition-all"
+                    type="text"
+                    placeholder="Full Name"
+                    autoComplete="name"
+                  />
+                  <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                </div>
               )}
-              <input
-                name="username"
-                className="text-primary rounded px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-primary focus:outline-none"
-                placeholder="Username"
-                required
-                autoFocus
-              />
-
-              <input
-                className="text-primary rounded px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-primary focus:outline-none"
-                type="password"
-                placeholder="Password"
-                autoComplete={
-                  mode === "signup" ? "new-password" : "current-password"
-                }
-              />
-              <button
-                className="mt-2 bg-primary text-white py-2 rounded font-semibold shadow hover:bg-primary/90 transition"
+              <div className="relative">
+                <input
+                  name="username"
+                  className="w-full text-primary rounded-lg px-10 py-3 border border-gray-200 bg-white/70 focus:ring-2 focus:ring-primary/80 focus:outline-none focus:bg-white shadow-sm transition-all"
+                  placeholder="Username"
+                  required
+                  autoFocus
+                />
+                <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              </div>
+              <div className="relative">
+                <input
+                  className="w-full text-primary rounded-lg px-10 py-3 border border-gray-200 bg-white/70 focus:ring-2 focus:ring-primary/60 focus:outline-none focus:bg-white shadow-sm transition-all"
+                  type="password"
+                  placeholder="Password"
+                  autoComplete={
+                    mode === "signup" ? "new-password" : "current-password"
+                  }
+                />
+                <LockIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              </div>
+              <motion.button
+                whileTap={{ scale: 0.97 }}
+                whileHover={{ scale: 1.03 }}
+                className="mt-3 bg-primary text-white py-2.5 rounded-lg font-semibold shadow-lg hover:bg-primary/90 transition-all text-lg tracking-wide"
                 type="submit"
               >
                 {mode === "login" ? "Login" : "Sign Up"}
-              </button>
-
-              {error && <div className="text-red-500 text-sm">{error}</div>}
+              </motion.button>
+              {error && (
+                <div className="text-destructive text-sm pl-1">{error}</div>
+              )}
             </form>
-            <div className="text-center text-sm text-gray-600 mt-2">
+            <div className="text-center text-sm text-gray-600 mt-3">
               {mode === "login" ? (
                 <>
-                  {" Don't have an account? "}
+                  {"Don't have an account? "}
                   <button
-                    className="text-accent font-medium hover:underline"
+                    className="text-accent font-semibold hover:underline transition"
                     onClick={() => setMode("signup")}
                   >
                     Sign up
@@ -119,7 +145,7 @@ export default function SignUpLoginDialog({
                 <>
                   Already have an account?{" "}
                   <button
-                    className="text-accent font-medium hover:underline"
+                    className="text-accent font-semibold hover:underline transition"
                     onClick={() => setMode("login")}
                   >
                     Log in

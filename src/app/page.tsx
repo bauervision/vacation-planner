@@ -1,6 +1,6 @@
 "use client";
 import { useAuth } from "@/app/context/AuthContext";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useInView, motion, AnimatePresence } from "framer-motion";
 
 import Align from "./components/Align";
@@ -11,6 +11,9 @@ import PageTitle from "./components/PageTitle";
 
 import Section from "./components/Section";
 import SignUpLoginDialog from "./components/SignUpLoginDialog";
+import { VacationToast } from "./components/VacationToast";
+import { getNextVacation } from "./utils/user";
+import { Vacation } from "./types/user";
 
 export default function HomePage() {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -18,6 +21,23 @@ export default function HomePage() {
   const isNavInView = useInView(navRef, { margin: "-48px 0px 0px 0px" }); // tweak as needed
 
   const { user } = useAuth();
+  const [showToast, setShowToast] = useState(false);
+
+  const wasUser = useRef(user);
+  const [nextVacation, setNextVacation] = useState<Vacation | null>(null);
+
+  useEffect(() => {
+    // Only show if user changed from null to something
+    if (!wasUser.current && user) {
+      setShowToast(true);
+    }
+    wasUser.current = user;
+    if (user) {
+      setNextVacation(getNextVacation(user.futureVacations));
+    } else {
+      setNextVacation(null); // Clear it when logging out
+    }
+  }, [user]);
 
   return (
     <div>
@@ -119,6 +139,20 @@ export default function HomePage() {
       <SignUpLoginDialog
         open={dialogOpen}
         onClose={() => setDialogOpen(false)}
+      />
+
+      <VacationToast
+        open={showToast}
+        onClose={() => setShowToast(false)}
+        daysToVacation={
+          nextVacation
+            ? Math.ceil(
+                (new Date(nextVacation.startDate).getTime() - Date.now()) /
+                  (1000 * 60 * 60 * 24)
+              )
+            : undefined
+        }
+        destination={nextVacation?.location}
       />
     </div>
   );

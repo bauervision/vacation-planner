@@ -1,0 +1,71 @@
+import { User } from "./types/user";
+
+export const demoUser: User = {
+  id: "user_001",
+  username: "mcb",
+  displayName: "Mike Bauer",
+  email: "mike@example.com",
+  avatarUrl: "/avatars/mcb.png",
+  futureVacations: [
+    {
+      id: "vac_101",
+      title: "Bahamas Getaway",
+      location: "Nassau, Bahamas",
+      startDate: "2025-07-15",
+      endDate: "2025-07-22",
+      cost: 3800,
+      travelers: ["Mike", "Sarah", "Liam"],
+      notes: "Book snorkeling tour, request ocean view",
+      hostId: "host_3",
+    },
+    {
+      id: "vac_102",
+      title: "Colorado Cabin Retreat",
+      location: "Estes Park, CO",
+      startDate: "2025-10-05",
+      endDate: "2025-10-12",
+      cost: 2200,
+      travelers: ["Mike", "Anna"],
+      notes: "Check for fall foliage peak!",
+      hostId: "host_2",
+    },
+  ],
+  pastVacations: [
+    {
+      id: "vac_091",
+      title: "Orlando Disney Adventure",
+      location: "Orlando, FL",
+      startDate: "2024-04-10",
+      endDate: "2024-04-16",
+      cost: 4100,
+      travelers: ["Mike", "Liam", "Sarah"],
+      notes: "Hot! Bring sunscreen next time.",
+      hostId: "host_1",
+    },
+  ],
+  hostContacts: [
+    {
+      id: "host_1",
+      name: "Patricia Jones",
+      phone: "+1-407-555-0123",
+      email: "pjones@vacationhomes.com",
+      location: "Orlando, FL",
+      notes: "Left us fresh fruit and coffee!",
+    },
+    {
+      id: "host_2",
+      name: "Robert Vail",
+      phone: "+1-720-555-9876",
+      email: "robert@mountaincabins.com",
+      location: "Estes Park, CO",
+      notes: "Gave hiking recommendations.",
+    },
+    {
+      id: "host_3",
+      name: "Sophie Martinez",
+      phone: "+1-242-555-4422",
+      email: "sophie@bahamashosts.com",
+      location: "Nassau, Bahamas",
+    },
+  ],
+};

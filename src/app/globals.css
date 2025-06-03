@@ -63,6 +63,16 @@ body {
   color: var(--color-accent2) !important;
 }
 
+.border-primary {
+  border-color: var(--color-primary) !important;
+}
+.border-secondary {
+  border-color: var(--color-secondary) !important;
+}
+.border-accent {
+  border-color: var(--color-accent) !important;
+}
+
 /* globals.css */
 @keyframes gradient-vertical-move {
   0% {
